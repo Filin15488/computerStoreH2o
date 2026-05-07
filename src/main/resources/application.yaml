@@ -1,7 +1,11 @@
 spring:
   application:
     name: h2o
-
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
 ---
 spring:
   config:
@@ -11,3 +15,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  jpa:
+    show-sql: true

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS products
     serial_number   VARCHAR(256) UNIQUE               NOT NULL,
     manufacturer_id INT REFERENCES manufacturers (id) NOT NULL,
     price           NUMERIC(10, 2)                    NOT NULL DEFAULT (0.0),
-    stock           INT                               NOT NULL DEFAULT (0)                     NOT NULL
+    stock           INT CHECK (stock >= 0)            NOT NULL DEFAULT (0)
 );
 
 CREATE TABLE IF NOT EXISTS desktop_computers
