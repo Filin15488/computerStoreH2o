@@ -2,6 +2,8 @@ package by.filin.h2o.advice;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -62,20 +66,42 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = "";
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            errorMessage += fieldError.getDefaultMessage() + " ";
-        }
-        errorMessage = errorMessage.substring(0, errorMessage.length() - 1);
+    public ResponseEntity<ExceptionResponse> handleValidation(
+            MethodArgumentNotValidException ex
+    ) {
 
-        return new ResponseEntity<>(
-                ExceptionResponse.builder()
-                        .message(errorMessage)
-                        .build()
-                ,HttpStatus.CONFLICT
-        );
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .distinct()
+                .collect(Collectors.joining(", "));
 
+        return ResponseEntity.badRequest()
+                .body(
+                        ExceptionResponse.builder()
+                                .message(message)
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleConstraintViolation(
+            ConstraintViolationException ex
+    ) {
+
+        String message = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .distinct()
+                .collect(Collectors.joining(", "));
+
+        return ResponseEntity.badRequest()
+                .body(
+                        ExceptionResponse.builder()
+                                .message(message)
+                                .build()
+                );
     }
 
     @ExceptionHandler(GeneralException.class)

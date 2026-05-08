@@ -70,6 +70,7 @@ public abstract class Product {
     }
 
     protected void fillBaseResponse(ProductResponse response) {
+        response.setId(id);
         response.setSerialNumber(serialNumber);
         response.setPrice(price);
         response.setStock(stock);

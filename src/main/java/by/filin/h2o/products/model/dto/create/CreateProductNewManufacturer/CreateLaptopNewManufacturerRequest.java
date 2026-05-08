@@ -15,6 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CreateLaptopNewManufacturerRequest extends CreateProductNewManufacturerRequest implements LaptopRequestSpecific, NewManufacturerRequest {
-    @ValueOfInts(values = {13, 14, 15, 17})
+    @ValueOfInts(values = {13, 14, 15, 17}, message = "Invalid screen size")
     private Integer screenSize;
 }

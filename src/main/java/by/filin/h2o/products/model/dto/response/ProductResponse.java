@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public abstract class ProductResponse {
+    private Integer id;
     private String serialNumber;
     private BigDecimal price;
     private Integer stock;

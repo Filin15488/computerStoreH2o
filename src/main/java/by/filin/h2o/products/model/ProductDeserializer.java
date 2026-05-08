@@ -1,29 +1,22 @@
 package by.filin.h2o.products.model;
 
-import by.filin.h2o.advice.GeneralException;
-import by.filin.h2o.common.enums.FormFactor;
 import by.filin.h2o.common.enums.ManufacturerRequestType;
 import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateDesktopExistManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateHardDriveExistManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateLaptopExistManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateMonitorsExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateProductExistManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateDesktopNewManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateHardDriveNewManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateLaptopNewManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateMonitorsNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateProductNewManufacturerRequest;
 import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import by.filin.h2o.products.model.entity.Product;
-import org.springframework.http.HttpStatus;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.deser.std.StdDeserializer;
-
-import java.math.BigDecimal;
 
 public class ProductDeserializer extends StdDeserializer<CreateProductRequest> {
 
@@ -36,98 +29,66 @@ public class ProductDeserializer extends StdDeserializer<CreateProductRequest> {
     }
 
     @Override
-    public CreateProductRequest deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
-        JsonNode node = p.readValueAsTree();
-        try {
-            ManufacturerRequestType manufacturerRequestType = ManufacturerRequestType.valueOf(
-                    node.get("manufacturerType").asString()
-            );
-            try {
-                ProductType productType = ProductType.valueOf(
-                        node.get("productType").asString()
+    public CreateProductRequest deserialize(
+            JsonParser p,
+            DeserializationContext ctxt
+    ) throws JacksonException {
+
+        JsonNode node =
+                p.readValueAsTree();
+
+        ManufacturerRequestType manufacturerType =
+                ManufacturerRequestType.valueOf(
+                        node.get("manufacturerType")
+                                .asString()
                 );
-                String serialNumber = node.get("serialNumber").asString();
-                BigDecimal price = new BigDecimal(node.get("price").asString());
-                Integer stock = node.get("stock").asInt();
 
-                CreateProductRequest request = switch (manufacturerRequestType) {
-                    case NEW -> {
-                        String manufacturerName = node.get("manufacturer").asString();
-                        CreateProductNewManufacturerRequest product = switch (productType) {
-                            case DESKTOP -> {
-                                FormFactor formFactor = FormFactor.valueOf(node.get("formFactor").asString());
-                                CreateDesktopNewManufacturerRequest desk = new CreateDesktopNewManufacturerRequest();
-                                desk.setFormFactor(formFactor);
-                                yield desk;
-                            }
-                            case LAPTOPS -> {
-                                Integer screenSize = node.get("screenSize").asInt();
-                                CreateLaptopNewManufacturerRequest laptop = new CreateLaptopNewManufacturerRequest();
-                                laptop.setScreenSize(screenSize);
-                                yield laptop;
-                            }
-                            case MONITORS -> {
-                                Float diagonal = node.get("diagonal").asFloat();
-                                CreateMonitorsNewManufacturerRequest monitors = new CreateMonitorsNewManufacturerRequest();
-                                monitors.setDiagonal(diagonal);
-                                yield monitors;
-                            }
-                            case HARD_DRIVES -> {
-                                Long capacity = node.get("capacity").asLong();
-                                CreateHardDriveNewManufacturerRequest hardDrive = new CreateHardDriveNewManufacturerRequest();
-                                hardDrive.setCapacity(capacity);
-                                yield hardDrive;
-                            }
-                        };
-                        product.setManufacturer(manufacturerName);
-                        yield product;
-                    }
-                    case EXISTING -> {
-                        Integer manufacturerId = node.get("manufacturerId").asInt();
-                        CreateProductExistManufacturerRequest product = switch (productType) {
-                            case DESKTOP -> {
-                                FormFactor formFactor = FormFactor.valueOf(node.get("formFactor").asString());
-                                CreateDesktopExistManufacturerRequest desk = new CreateDesktopExistManufacturerRequest();
-                                desk.setFormFactor(formFactor);
-                                yield desk;
-                            }
-                            case LAPTOPS -> {
-                                Integer screenSize = node.get("screenSize").asInt();
-                                CreateLaptopExistManufacturerRequest laptop = new CreateLaptopExistManufacturerRequest();
-                                laptop.setScreenSize(screenSize);
-                                yield laptop;
-                            }
-                            case MONITORS -> {
-                                Float diagonal = node.get("diagonal").asFloat();
-                                CreateMonitorsExistManufacturerRequest monitors = new CreateMonitorsExistManufacturerRequest();
-                                monitors.setDiagonal(diagonal);
-                                yield monitors;
-                            }
+        ProductType productType =
+                ProductType.valueOf(
+                        node.get("productType")
+                                .asString()
+                );
 
-                            case HARD_DRIVES -> {
-                                Long capacity = node.get("capacity").asLong();
-                                CreateHardDriveExistManufacturerRequest hardDrive = new CreateHardDriveExistManufacturerRequest();
-                                hardDrive.setCapacity(capacity);
-                                yield hardDrive;
-                            }
-                        };
-                        product.setManufacturerId(manufacturerId);
-                        yield product;
-                    }
-                };
-                request.setStock(stock);
-                request.setPrice(price);
-                request.setSerialNumber(serialNumber);
-                request.setProductType(productType);
-                request.setManufacturerType(manufacturerRequestType);
-                return request;
+        Class<? extends CreateProductRequest> dtoClass =
+                resolveClass(
+                        manufacturerType,
+                        productType
+                );
 
-            } catch (IllegalArgumentException e) {
-                throw new GeneralException("Not support productType", HttpStatus.BAD_REQUEST);
-            }
+        return ctxt.readTreeAsValue(
+                node,
+                dtoClass
+        );
+    }
 
-        } catch (IllegalArgumentException e) {
-            throw new GeneralException("Not support manufacturerType", HttpStatus.BAD_REQUEST);
-        }
+    private Class<? extends CreateProductRequest> resolveClass(
+            ManufacturerRequestType manufacturerType,
+            ProductType productType
+    ) {
+
+        return switch (manufacturerType) {
+
+            case NEW -> switch (productType) {
+
+                case DESKTOP -> CreateDesktopNewManufacturerRequest.class;
+
+                case LAPTOPS -> CreateLaptopNewManufacturerRequest.class;
+
+                case MONITORS -> CreateMonitorsNewManufacturerRequest.class;
+
+                case HARD_DRIVES -> CreateHardDriveNewManufacturerRequest.class;
+            };
+
+            case EXISTING -> switch (productType) {
+
+                case DESKTOP -> CreateDesktopExistManufacturerRequest.class;
+
+                case LAPTOPS -> CreateLaptopExistManufacturerRequest.class;
+
+                case MONITORS -> CreateMonitorsExistManufacturerRequest.class;
+
+                case HARD_DRIVES -> CreateHardDriveExistManufacturerRequest.class;
+            };
+        };
     }
 }

@@ -24,7 +24,19 @@ public class ValueOfIntsValidator
             Integer value,
             ConstraintValidatorContext context
     ) {
-        return value != null &&
-                allowedValues.contains(value);
+
+        boolean valid =
+                value != null &&
+                        allowedValues.contains(value);
+
+        if (!valid) {
+            context.disableDefaultConstraintViolation();
+
+            context.buildConstraintViolationWithTemplate(
+                    context.getDefaultConstraintMessageTemplate()
+            ).addConstraintViolation();
+        }
+
+        return valid;
     }
 }
