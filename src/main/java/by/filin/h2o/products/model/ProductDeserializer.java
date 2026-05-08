@@ -4,17 +4,17 @@ import by.filin.h2o.advice.GeneralException;
 import by.filin.h2o.common.enums.FormFactor;
 import by.filin.h2o.common.enums.ManufacturerRequestType;
 import by.filin.h2o.common.enums.ProductType;
-import by.filin.h2o.products.model.dto.CreateProductExistManufacturer.CreateDesktopExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductExistManufacturer.CreateHardDriveExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductExistManufacturer.CreateLaptopExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductExistManufacturer.CreateMonitorsExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductExistManufacturer.CreateProductExistManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductNewManufacturer.CreateDesktopNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductNewManufacturer.CreateHardDriveNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductNewManufacturer.CreateLaptopNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductNewManufacturer.CreateMonitorsNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductNewManufacturer.CreateProductNewManufacturerRequest;
-import by.filin.h2o.products.model.dto.CreateProductRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateDesktopExistManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateHardDriveExistManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateLaptopExistManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateMonitorsExistManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductExistManufacturer.CreateProductExistManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateDesktopNewManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateHardDriveNewManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateLaptopNewManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateMonitorsNewManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer.CreateProductNewManufacturerRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import by.filin.h2o.products.model.entity.Product;
 import org.springframework.http.HttpStatus;
 import tools.jackson.core.JacksonException;
@@ -52,7 +52,7 @@ public class ProductDeserializer extends StdDeserializer<CreateProductRequest> {
 
                 CreateProductRequest request = switch (manufacturerRequestType) {
                     case NEW -> {
-                        String manufacturerName = node.get("manufacturer").asText();
+                        String manufacturerName = node.get("manufacturer").asString();
                         CreateProductNewManufacturerRequest product = switch (productType) {
                             case DESKTOP -> {
                                 FormFactor formFactor = FormFactor.valueOf(node.get("formFactor").asString());

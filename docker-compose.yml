@@ -9,5 +9,4 @@ services:
     env_file:
       - .env
     volumes:
-      - ./db/dump:/dump
       - ./db/data:/var/lib/postgresql/data

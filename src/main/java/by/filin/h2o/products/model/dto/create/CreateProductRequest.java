@@ -1,4 +1,4 @@
-package by.filin.h2o.products.model.dto;
+package by.filin.h2o.products.model.dto.create;
 
 import by.filin.h2o.common.enums.ManufacturerRequestType;
 import by.filin.h2o.common.enums.ProductType;

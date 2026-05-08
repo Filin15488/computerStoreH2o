@@ -36,7 +36,7 @@ public abstract class Product {
     @Column(name = "serial_number", nullable = false, unique = true)
     private String serialNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer;
 

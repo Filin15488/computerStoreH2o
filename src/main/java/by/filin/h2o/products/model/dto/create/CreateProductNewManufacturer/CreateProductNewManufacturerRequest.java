@@ -1,6 +1,6 @@
-package by.filin.h2o.products.model.dto.CreateProductNewManufacturer;
+package by.filin.h2o.products.model.dto.create.CreateProductNewManufacturer;
 
-import by.filin.h2o.products.model.dto.CreateProductRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

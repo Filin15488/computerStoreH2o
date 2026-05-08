@@ -1,6 +1,6 @@
 package by.filin.h2o.products.api;
 
-import by.filin.h2o.products.model.dto.CreateProductRequest;
+import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import by.filin.h2o.products.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
