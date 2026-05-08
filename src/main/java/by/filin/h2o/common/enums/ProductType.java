@@ -5,7 +5,9 @@ import by.filin.h2o.hardDrive.model.entity.HardDrive;
 import by.filin.h2o.laptop.model.entity.Laptop;
 import by.filin.h2o.monitor.model.entity.Monitor;
 import by.filin.h2o.products.model.entity.Product;
+import lombok.Getter;
 
+@Getter
 public enum ProductType {
     DESKTOP(DesktopComputer.class),
     LAPTOPS(Laptop.class),
@@ -18,7 +20,4 @@ public enum ProductType {
         this.entityClass = entityClass;
     }
 
-    public Class<? extends Product> getEntityClass() {
-        return entityClass;
-    }
 }

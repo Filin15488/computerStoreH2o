@@ -109,4 +109,19 @@ public class ProductService {
     public List<ProductResponse> getProductsByType(ProductType productType) {
         return productRepository.findByType(productType.getEntityClass()).stream().map(Product::toResponse).toList();
     }
+
+    public ProductResponse getProductById(Long id) {
+        return getProductOrThrow(id)
+                .toResponse();
+    }
+
+    private Product getProductOrThrow(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() ->
+                        new GeneralException(
+                                "Product with id " + id + " not found",
+                                HttpStatus.NOT_FOUND
+                        )
+                );
+    }
 }
