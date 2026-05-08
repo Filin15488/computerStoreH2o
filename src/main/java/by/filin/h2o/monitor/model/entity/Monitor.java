@@ -1,5 +1,6 @@
 package by.filin.h2o.monitor.model.entity;
 
+import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.products.model.dto.response.MonitorResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
@@ -23,6 +24,7 @@ public class Monitor extends Product {
     public MonitorResponse toResponse() {
         MonitorResponse mr = new MonitorResponse();
         fillBaseResponse(mr);
+        mr.setProductType(ProductType.MONITORS);
         mr.setDiagonal(diagonal);
         return mr;
     }

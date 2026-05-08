@@ -1,6 +1,7 @@
 package by.filin.h2o.desktopComputer.model.entity;
 
 import by.filin.h2o.common.enums.FormFactor;
+import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.products.model.dto.response.DesktopResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
@@ -27,6 +28,7 @@ public class DesktopComputer extends Product {
         DesktopResponse dr = new DesktopResponse();
         fillBaseResponse(dr);
         dr.setFormFactor(this.formFactor);
+        dr.setProductType(ProductType.DESKTOP);
         return dr;
     }
 }

@@ -1,6 +1,7 @@
 package by.filin.h2o.hardDrive.model.entity;
 
 
+import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.products.model.dto.response.HardDriveResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
@@ -24,6 +25,7 @@ public class HardDrive extends Product {
     public HardDriveResponse toResponse() {
         HardDriveResponse hd = new HardDriveResponse();
         fillBaseResponse(hd);
+        hd.setProductType(ProductType.HARD_DRIVES);
         hd.setCapacity(capacity);
         return hd;
     }

@@ -1,5 +1,6 @@
 package by.filin.h2o.laptop.model.entity;
 
+import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.common.validation.ValueOfInts;
 import by.filin.h2o.products.model.dto.response.LaptopResponse;
 import by.filin.h2o.products.model.entity.Product;
@@ -25,6 +26,7 @@ public class Laptop extends Product {
     public LaptopResponse toResponse(){
         LaptopResponse lr = new LaptopResponse();
         fillBaseResponse(lr);
+        lr.setProductType(ProductType.LAPTOPS);
         lr.setScreenSize(screenSize);
         return lr;
     }
