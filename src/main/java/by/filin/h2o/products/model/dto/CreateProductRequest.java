@@ -1,29 +1,23 @@
 package by.filin.h2o.products.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import by.filin.h2o.common.enums.ManufacturerRequestType;
+import by.filin.h2o.common.enums.ProductType;
+import by.filin.h2o.products.model.ProductDeserializer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.math.BigDecimal;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CreateProductNewManufacturerRequest.class, name = "NEW"),
-        @JsonSubTypes.Type(value = CreateProductExistManufacturerRequest.class, name = "EXISTING")
-})
 @Getter
 @Setter
-public sealed abstract class CreateProductRequest
-        permits CreateProductNewManufacturerRequest,
-        CreateProductExistManufacturerRequest {
+@JsonDeserialize(using = ProductDeserializer.class)
+public abstract class CreateProductRequest {
+    @NotBlank
+    private ManufacturerRequestType manufacturerType;
 
     @NotBlank
     @Size(max = 256)
@@ -32,5 +26,7 @@ public sealed abstract class CreateProductRequest
     private BigDecimal price;
     @PositiveOrZero
     private Integer stock = 0;
+    @NotBlank
+    private ProductType productType;
 }
 

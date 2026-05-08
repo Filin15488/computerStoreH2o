@@ -1,5 +1,6 @@
-package by.filin.h2o.products.model.dto;
+package by.filin.h2o.products.model.dto.CreateProductNewManufacturer;
 
+import by.filin.h2o.common.enums.FormFactor;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public final class CreateProductNewManufacturerRequest extends CreateProductRequest {
+@Builder
+public class CreateDesktopNewManufacturerRequest extends CreateProductNewManufacturerRequest {
     @NotBlank
-    private String manufacturer;
+    private FormFactor formFactor;
 }
