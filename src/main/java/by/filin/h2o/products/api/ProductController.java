@@ -1,13 +1,19 @@
 package by.filin.h2o.products.api;
 
+import by.filin.h2o.common.enums.ProductType;
 import by.filin.h2o.products.model.dto.create.CreateProductRequest;
+import by.filin.h2o.products.model.dto.response.ProductResponse;
 import by.filin.h2o.products.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/products")
@@ -17,10 +23,16 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Void> create(
+    public ResponseEntity<ProductResponse> create(
             @RequestBody CreateProductRequest createProductRequest
-    ){
-        productService.createProduct(createProductRequest);
-        return ResponseEntity.ok().build();
+    ) {
+        return ResponseEntity.ok(productService.createProduct(createProductRequest));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<ProductResponse>> getProductsByType(
+            @RequestParam ProductType productType
+    ) {
+        return ResponseEntity.ok(productService.getProductsByType(productType));
     }
 }

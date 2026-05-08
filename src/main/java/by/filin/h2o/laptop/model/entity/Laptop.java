@@ -1,6 +1,7 @@
 package by.filin.h2o.laptop.model.entity;
 
 import by.filin.h2o.common.validation.ValueOfInts;
+import by.filin.h2o.products.model.dto.response.LaptopResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,4 +21,11 @@ public class Laptop extends Product {
     @Column(name = "screen_size", nullable = false)
     @ValueOfInts(values = {13, 14, 15, 17})
     private Integer screenSize;
+
+    public LaptopResponse toResponse(){
+        LaptopResponse lr = new LaptopResponse();
+        fillBaseResponse(lr);
+        lr.setScreenSize(screenSize);
+        return lr;
+    }
 }

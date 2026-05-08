@@ -1,5 +1,6 @@
 package by.filin.h2o.monitor.model.entity;
 
+import by.filin.h2o.products.model.dto.response.MonitorResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,4 +19,11 @@ public class Monitor extends Product {
     @Column(name = "diagonal")
     @Positive
     private Float diagonal;
+
+    public MonitorResponse toResponse() {
+        MonitorResponse mr = new MonitorResponse();
+        fillBaseResponse(mr);
+        mr.setDiagonal(diagonal);
+        return mr;
+    }
 }

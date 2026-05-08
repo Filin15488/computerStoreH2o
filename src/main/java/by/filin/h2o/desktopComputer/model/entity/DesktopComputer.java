@@ -1,6 +1,7 @@
 package by.filin.h2o.desktopComputer.model.entity;
 
 import by.filin.h2o.common.enums.FormFactor;
+import by.filin.h2o.products.model.dto.response.DesktopResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,4 +22,11 @@ public class DesktopComputer extends Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "form_factor")
     private FormFactor formFactor;
+
+    public DesktopResponse toResponse() {
+        DesktopResponse dr = new DesktopResponse();
+        fillBaseResponse(dr);
+        dr.setFormFactor(this.formFactor);
+        return dr;
+    }
 }

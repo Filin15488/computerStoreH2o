@@ -1,6 +1,11 @@
 package by.filin.h2o.products.model.entity;
 
+import by.filin.h2o.desktopComputer.model.entity.DesktopComputer;
+import by.filin.h2o.hardDrive.model.entity.HardDrive;
+import by.filin.h2o.laptop.model.entity.Laptop;
 import by.filin.h2o.manufacturers.model.entity.Manufacturer;
+import by.filin.h2o.monitor.model.entity.Monitor;
+import by.filin.h2o.products.model.dto.response.ProductResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,4 +50,29 @@ public abstract class Product {
 
     @PositiveOrZero
     private Integer stock;
+
+    public ProductResponse toResponse() {
+        return switch (this) {
+
+            case DesktopComputer pc ->
+                    pc.toResponse();
+
+            case Laptop laptop ->
+                    laptop.toResponse();
+
+            case Monitor monitor ->
+                    monitor.toResponse();
+
+            case HardDrive hardDrive ->
+                    hardDrive.toResponse();
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
+    }
+
+    protected void fillBaseResponse(ProductResponse response) {
+        response.setSerialNumber(serialNumber);
+        response.setPrice(price);
+        response.setStock(stock);
+        response.setManufacturer(manufacturer.toResponse());
+    }
 }

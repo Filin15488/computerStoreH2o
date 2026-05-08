@@ -1,0 +1,18 @@
+package by.filin.h2o.products.model.dto.response;
+
+import by.filin.h2o.common.enums.ProductType;
+import by.filin.h2o.manufacturers.model.dto.ManufacturerResponse;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+public abstract class ProductResponse {
+    private String serialNumber;
+    private BigDecimal price;
+    private Integer stock;
+    private ProductType productType;
+    private ManufacturerResponse manufacturer;
+}

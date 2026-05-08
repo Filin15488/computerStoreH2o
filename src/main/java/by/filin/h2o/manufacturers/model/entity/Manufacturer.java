@@ -1,5 +1,6 @@
 package by.filin.h2o.manufacturers.model.entity;
 
+import by.filin.h2o.manufacturers.model.dto.ManufacturerResponse;
 import by.filin.h2o.products.model.entity.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,4 +39,7 @@ public class Manufacturer {
     @Builder.Default
     private Set<Product> products = new LinkedHashSet<>();
 
+    public ManufacturerResponse toResponse() {
+        return new  ManufacturerResponse(this.id, this.name);
+    }
 }
