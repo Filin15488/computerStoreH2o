@@ -8,16 +8,19 @@ import by.filin.h2o.laptop.model.entity.Laptop;
 import by.filin.h2o.manufacturers.model.entity.Manufacturer;
 import by.filin.h2o.manufacturers.repository.ManufacturerRepository;
 import by.filin.h2o.monitor.model.entity.Monitor;
-import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import by.filin.h2o.products.model.dto.common.manufacturer.ExistingManufacturerRequest;
 import by.filin.h2o.products.model.dto.common.manufacturer.NewManufacturerRequest;
 import by.filin.h2o.products.model.dto.common.products.DesktopRequestSpecific;
 import by.filin.h2o.products.model.dto.common.products.HardDriveRequestSpecific;
 import by.filin.h2o.products.model.dto.common.products.LaptopRequestSpecific;
 import by.filin.h2o.products.model.dto.common.products.MonitorRequestSpecific;
+import by.filin.h2o.products.model.dto.create.CreateProductRequest;
 import by.filin.h2o.products.model.dto.response.ProductResponse;
+import by.filin.h2o.products.model.dto.update.ProductUpdateRequest;
 import by.filin.h2o.products.model.entity.Product;
 import by.filin.h2o.products.repository.ProductRepository;
+import by.filin.h2o.products.service.updater.ProductUpdater;
+import by.filin.h2o.products.service.updater.ProductUpdaterRegistry;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ProductService {
     private ProductRepository productRepository;
     private ManufacturerRepository manufacturerRepository;
+    private ProductUpdaterRegistry registry;
 
     public ProductResponse createProduct(CreateProductRequest request) {
         Manufacturer manufacturer = resolveManufacturer(request);
@@ -124,4 +128,16 @@ public class ProductService {
                         )
                 );
     }
+
+    public ProductResponse updateProduct(Long id, ProductUpdateRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new GeneralException("Not found", HttpStatus.NOT_FOUND));
+
+        ProductUpdater updater = registry.get(product.getClass());
+
+        updater.update(product, request);
+
+        return productRepository.save(product).toResponse();
+    }
+
 }

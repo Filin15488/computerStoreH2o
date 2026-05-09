@@ -1,4 +1,4 @@
-package by.filin.h2o.products.model;
+package by.filin.h2o.products.model.dto.common;
 
 import by.filin.h2o.common.enums.ManufacturerRequestType;
 import by.filin.h2o.common.enums.ProductType;
@@ -18,13 +18,13 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.deser.std.StdDeserializer;
 
-public class ProductDeserializer extends StdDeserializer<CreateProductRequest> {
+public class ProductCreateDeserializer extends StdDeserializer<CreateProductRequest> {
 
-    public ProductDeserializer() {
+    public ProductCreateDeserializer() {
         this(null);
     }
 
-    public ProductDeserializer(Class<?> vc) {
+    public ProductCreateDeserializer(Class<?> vc) {
         super(Product.class);
     }
 
