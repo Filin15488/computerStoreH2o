@@ -1,5 +1,6 @@
 package by.filin.h2o.manufacturers.service;
 
+import by.filin.h2o.manufacturers.model.dto.ManufacturerRequest;
 import by.filin.h2o.manufacturers.model.dto.ManufacturerResponse;
 import by.filin.h2o.manufacturers.model.entity.Manufacturer;
 import by.filin.h2o.manufacturers.repository.ManufacturerRepository;
@@ -18,5 +19,11 @@ public class ManufacturerService {
         return manufacturerRepository.findAll().stream()
                 .map(Manufacturer::toResponse)
                 .toList();
+    }
+
+    public ManufacturerResponse createManufacturer(ManufacturerRequest request) {
+        Manufacturer newManufacturer = new Manufacturer();
+        newManufacturer.setName(request.name());
+        return manufacturerRepository.save(newManufacturer).toResponse();
     }
 }
